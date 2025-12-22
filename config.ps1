@@ -9,21 +9,21 @@ $Config = @{
     # ===== Profile Section =====
     # These appear under the username header
     Profile = [ordered]@{
-        OS                      = "macOS"
+        OS                      = "Ubuntu"
         Uptime                  = $null  # Calculated automatically from BirthYear
-        Host                    = "SpaceX"
-        Kernel                  = "Sr IT Systems Engineer"
-        IDE                     = "VS Code"
-        "Languages.Programming" = "PowerShell"
-        Hobbies                 = "Lifting, Scripting"
+        Host                    = "Latitude-5550"
+        Kernel                  = "Linux 6.8.0-88-generic"
+        IDE                     = "Cursor"
+        "Languages.Programming" = "Rust"
+        Hobbies                 = "Makin' stuff work."
     }
 
     # ===== Contact Section =====
     Contact = [ordered]@{
-        LinkedIn = "jorgeasaurus"
-        Discord  = "jorgeasaurus"
+        LinkedIn = "gregorywildes"
+        Discord  = ""
         GitHub   = "gwild"
-        Blog     = "jorgeasaur.us"
+        Blog     = "stringdriver803658044.wordpress.com"
     }
 
     # ===== Files =====
