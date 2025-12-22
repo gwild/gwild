@@ -14,7 +14,7 @@ $Config = @{
         Host                    = "Latitude-5550"
         Kernel                  = "Linux 6.8.0-88-generic"
         IDE                     = "Cursor"
-        "Languages.Programming" = "Rust"
+        "Languages.Programming" = "Python, Rust"
         Hobbies                 = "Makin' stuff work."
     }
 
