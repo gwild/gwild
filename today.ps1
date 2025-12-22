@@ -373,6 +373,10 @@ function New-CacheBuilder {
     $cached = $true
     $hashString = Get-SHA256Hash -InputString $USER_NAME
     $filename = "cache/$hashString.txt"
+
+    if (-not (Test-Path "cache")) {
+        New-Item -ItemType Directory -Path "cache" | Out-Null
+    }
     
     if (Test-Path $filename) {
         $data = Get-Content $filename
@@ -529,6 +533,10 @@ function Save-ForceCloseFile {
     
     $hashString = Get-SHA256Hash -InputString $USER_NAME
     $filename = "cache/$hashString.txt"
+
+    if (-not (Test-Path "cache")) {
+        New-Item -ItemType Directory -Path "cache" | Out-Null
+    }
     
     $allLines = $CacheComment + $Data
     Set-Content -Path $filename -Value $allLines
