@@ -16,6 +16,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 1
+      - name: Generate ASCII art from profile image
+        shell: bash
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install pillow
+          python3 ./scripts/image_to_ascii.py --input ./profile.jpg --output ./ascii-art.txt --width 40 --height 25
       - name: Generate SVG templates
         shell: pwsh
         run: ./New-ProfileSvg.ps1
