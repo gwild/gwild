@@ -13,7 +13,7 @@ $Config = @{
         Uptime                  = $null  # Calculated automatically from BirthYear
         Host                    = "Latitude-5550"
         Kernel                  = "Linux 6.8.0-88-generic"
-        IDE                     = "Cursor"
+        IDE                     = "Cursor, Claude Code"
         "Languages.Programming" = "Python, Rust"
         Hobbies                 = "Makin' stuff work."
     }
