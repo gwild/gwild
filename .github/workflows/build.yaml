@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
       - name: Generate ASCII art from profile image
@@ -35,11 +35,10 @@ jobs:
         shell: pwsh
         run: |
           git add .
-          git diff
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git diff-index --quiet HEAD
-          if ($LASTEXITCODE -eq 1) {
+          $changes = git diff-index --quiet HEAD 2>&1; $hasChanges = $LASTEXITCODE -ne 0
+          if ($hasChanges) {
             git commit -m "Updated README"
             git push
           } else {
