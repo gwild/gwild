@@ -107,7 +107,8 @@ function Invoke-SimpleRequest {
 function Get-GraphCommits {
     param(
         [string]$StartDate,
-        [string]$EndDate
+        [string]$EndDate,
+        [bool]$IncludePrivate = $false
     )
     
     $script:QUERY_COUNT.graph_commits++
@@ -115,7 +116,7 @@ function Get-GraphCommits {
     $query = @"
 query(`$start_date: DateTime!, `$end_date: DateTime!, `$login: String!) {
     user(login: `$login) {
-        contributionsCollection(from: `$start_date, to: `$end_date) {
+        contributionsCollection(from: `$start_date, to: `$end_date, includePrivateContributions: $([System.Convert]::ToString($IncludePrivate)).ToLower()) {
             contributionCalendar {
                 totalContributions
             }
@@ -746,7 +747,7 @@ Write-Formatter -QueryType "account data" -Difference $userData[1]
 $ageData = Measure-PerfCounter -ScriptBlock { Get-DailyReadme -BirthYear $Config.BirthYear }
 Write-Formatter -QueryType "age calculation" -Difference $ageData[1]
 
-# Get LOC data
+# Get LOC data (includes contributions from OWNER, COLLABORATOR, and ORGANIZATION_MEMBER repos)
 $totalLoc = Measure-PerfCounter -ScriptBlock { Get-LocQuery -OwnerAffiliation @('OWNER', 'COLLABORATOR', 'ORGANIZATION_MEMBER') -CommentSize $Config.CacheCommentSize }
 if ($totalLoc[0][3]) {
     Write-Formatter -QueryType "LOC (cached)" -Difference $totalLoc[1]
@@ -755,16 +756,16 @@ else {
     Write-Formatter -QueryType "LOC (no cache)" -Difference $totalLoc[1]
 }
 
-# Get commit data
+# Get commit data (includes both public and private repository contributions)
 $commitData = Measure-PerfCounter -ScriptBlock { Get-CommitCounter -CommentSize $Config.CacheCommentSize }
 
-# Get star data
+# Get star data (public repos only)
 $starData = Measure-PerfCounter -ScriptBlock { Get-GraphReposStars -CountType "stars" -OwnerAffiliation @('OWNER') }
 
-# Get repo data
+# Get repo data (public repos only)
 $repoData = Measure-PerfCounter -ScriptBlock { Get-GraphReposStars -CountType "repos" -OwnerAffiliation @('OWNER') }
 
-# Get contrib data
+# Get contrib data (includes OWNER, COLLABORATOR, and ORGANIZATION_MEMBER repos)
 $contribData = Measure-PerfCounter -ScriptBlock { Get-GraphReposStars -CountType "repos" -OwnerAffiliation @('OWNER', 'COLLABORATOR', 'ORGANIZATION_MEMBER') }
 
 # Get follower data
