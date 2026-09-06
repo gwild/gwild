@@ -135,6 +135,27 @@ query(`$start_date: DateTime!, `$end_date: DateTime!, `$login: String!) {
     return [int]$result.data.user.contributionsCollection.contributionCalendar.totalContributions
 }
 
+function Get-TotalCommitContributions {
+    $script:QUERY_COUNT.graph_commits++
+
+    $query = @"
+query(`$login: String!) {
+    user(login: `$login) {
+        contributionsCollection {
+            totalCommitContributions
+        }
+    }
+}
+"@
+
+    $variables = @{
+        login = $USER_NAME
+    }
+
+    $result = Invoke-SimpleRequest -FuncName "Get-TotalCommitContributions" -Query $query -Variables $variables
+    return [int]$result.data.user.contributionsCollection.totalCommitContributions
+}
+
 function Get-GraphReposStars {
     param(
         [string]$CountType,
@@ -756,8 +777,9 @@ else {
     Write-Formatter -QueryType "LOC (no cache)" -Difference $totalLoc[1]
 }
 
-# Get commit data (includes both public and private repository contributions)
-$commitData = Measure-PerfCounter -ScriptBlock { Get-CommitCounter -CommentSize $Config.CacheCommentSize }
+# Get commit contribution count directly from GitHub.
+# Private repository commit contributions are included when ACCESS_TOKEN has the required access.
+$commitData = Measure-PerfCounter -ScriptBlock { Get-TotalCommitContributions }
 
 # Get star data (public repos only)
 $starData = Measure-PerfCounter -ScriptBlock { Get-GraphReposStars -CountType "stars" -OwnerAffiliation @('OWNER') }
@@ -781,7 +803,8 @@ if (Test-Path "cache/repository_archive.txt") {
             $totalLoc[0][$i] += $archivedData[$i]
         }
         $contribData[0] += $archivedData[-1]
-        $commitData[0] += [int]$archivedData[-2]
+        # Do not add archived commit counts here. CommitData now comes directly from
+        # GitHub contributionsCollection.totalCommitContributions.
     }
 }
 
