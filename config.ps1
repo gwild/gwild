@@ -11,17 +11,17 @@ $Config = @{
     Profile = [ordered]@{
         OS                      = "Ubuntu"
         Uptime                  = $null  # Calculated automatically from BirthYear
-        Host                    = "Latitude-5550"
-        Kernel                  = "Linux 6.8.0-88-generic"
-        IDE                     = "Cursor, Claude Code"
-        "Languages.Programming" = "Python, Rust"
+        Host                    = "Stuff"
+        Kernel                  = "Linux []-generic"
+        IDE                     = "Cursor, Claude Code, Codex"
+        "Languages.Programming" = "Python, Rust, Whatever"
         Hobbies                 = "Makin' stuff work."
     }
 
     # ===== Contact Section =====
     Contact = [ordered]@{
         LinkedIn = "gregorywildes"
-        Discord  = ""
+        Discord  = "adorable_otter_87203"
         GitHub   = "gwild"
         Blog     = "stringdriver803658044.wordpress.com"
     }
